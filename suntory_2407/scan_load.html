@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head
+    prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# website: http://ogp.me/ns/website#"
+  >
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta
+      name="viewport"
+      content="width=device-width,minimum-scale=1.0,maximum-scale=1.6,user-scalable=yes"
+    />
+    <meta name="format-detection" content="telephone=no" />
+
+    <title>サントリー生ビール どこでもサン生キャンペーン</title>
+
+    <link href="/scan_assets/css/scan_contents.css" rel="stylesheet" />
+  </head>
+  <body>
+    <!-- Contents -->
+    <div class="wrap scan_load">
+      <div class="header">
+        <div class="inner">
+          <p class="header_ttl imgOuter">
+            <img
+              src="/scan_assets/images/cmn_head.png"
+              alt="サントリー生ビール どこでもサン生キャンペーン 3回飲んで当たる!!!"
+            />
+          </p>
+        </div>
+      </div>
+
+      <div class="scan_load_body">
+        <div class="scan_load_body_notice">
+          <img
+            src="/scan_assets/images/load_notice.png"
+            alt="カメラ起動中… 少々お待ちください。カメラが起動したら、缶をガイドに合わせよう！※SUNの文字が見える面をスキャンしてくださいスキャンボタンが表示されたらタップしてスキャン開始！スキャン時はお顔が映りこまないようにしてください。"
+          />
+        </div>
+        <div class="scan_load_body_pic">
+          <img
+            src="/scan_assets/images/load_pic.png"
+            alt=""
+            class="scan_load_body_pic_1"
+          />
+          <img
+            src="/scan_assets/images/load_pic2.png"
+            alt=""
+            class="scan_load_body_pic_2"
+          />
+          <img
+            src="/scan_assets/images/load_pic3.png"
+            alt=""
+            class="scan_load_body_pic_3"
+          />
+          <img
+            src="/scan_assets/images/load_pic4.png"
+            alt=""
+            class="scan_load_body_pic_4"
+          />
+        </div>
+      </div>
+    </div>
+
+    <!-- /Contents -->
+    <script src="/scan_assets/js/scan_contents.min.js"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/tensorflow/4.17.0/tf.min.js"
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script src="./js/main.js"></script>
+    <script src="./js/globals.js"></script>
+    <script src="./js/model.js"></script>
+
+    <script>
+      const urlSearchParams = new URLSearchParams(window.location.search);
+      const params = Object.fromEntries(urlSearchParams.entries());
+
+      //ページの流れ
+      document.addEventListener("DOMContentLoaded", async function () {
+        // モデルロードしたらページ遷移
+        // SCANDACAN では使いません
+        try {
+          await loadModels();
+        } catch (error) {}
+        
+        window.location = `scan_camera.html?size=${params.size}&user_id=${params.asahi_id}`;
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head
+    prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# website: http://ogp.me/ns/website#"
+  >
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta
+      name="viewport"
+      content="width=device-width,minimum-scale=1.0,maximum-scale=1.6,user-scalable=yes"
+    />
+    <meta name="format-detection" content="telephone=no" />
+    <title>サントリー生ビール どこでもサン生キャンペーン</title>
+    <link href="/scan_assets/css/scan_contents.css" rel="stylesheet" />
+    <link href="/css/main.css" rel="stylesheet" />
+    <link
+      rel="preload"
+      href="/scan_assets/movies/movie.mov"
+      as="video"
+      type="video/quicktime"
+    />
+    <link
+      rel="preload"
+      href="/scan_assets/movies/movie.webm"
+      as="video"
+      type="video/webm"
+    />
+  </head>
+  <body>
+    <!-- Contents -->
+    <div class="wrap scan_camera">
+      <div class="header">
+        <div class="inner">
+          <p class="header_ttl imgOuter">
+            <img
+              src="/scan_assets/images/cmn_head.png"
+              alt="サントリー生ビール どこでもサン生キャンペーン 3回飲んで当たる!!!"
+            />
+          </p>
+        </div>
+      </div>
+
+      <div class="scan_camera_flow_1">
+        <div class="scan_camera_flow_notice">
+          <img
+            src="/scan_assets/images/camera_flow1_notice_yoasobi.png"
+            alt="開栓した「サントリー生ビール」をご用意ください 「YOASO」が見える面を正面にし「生」の文字と飲み口をガイドに合わせカメラボタンが出たらタップ！"
+          />
+        </div>
+        <div class="scan_camera_flow_guide">
+          <img
+            alt=""
+            class="scan_camera_flow_guide_pic"
+          />
+          <img
+            alt=""
+            class="scan_camera_flow_guide_move"
+          />
+          <img
+            alt=""
+            class="scan_camera_flow_guide_move_sun"
+          />
+          <div class="scan_camera_flow_2 hidden"></div>
+          <div class="scan_camera_flow_2_move hidden"></div>
+        </div>
+        <div class="scan_camera_flow_notice2">
+          <img src="/scan_assets/images/camera_flow1_notice2.png" alt="スキャン時はお顔が映りこまないようにしてください。">
+        </div>
+      </div>
+
+      <!-- Camera button -->
+      <div id="scan_camera_btn"></div>
+
+      <!-- Count -->
+      <div class="countdown__absolute">
+        <div class="countdown__wrapper text-center" id="countdown">
+          <div class="countdown_number" id="countdown_number"></div>
+          <!-- <img src="./img/count.gif" class="hidden" />
+            <img src="./img/btn.png" class="hidden" />
+            <img src="./img/comment03.png" class="hidden" />
+            <img src="./img/comment04.png" class="hidden" /> -->
+        </div>
+      </div>
+
+      <div class="scan_camera_flow_3 hidden">
+        <div class="scan_camera_flow_movie">
+          <video muted playsinline id="scan_get_movie" preload="auto">
+            <source
+              src="/scan_assets/movies/movie.mov"
+              type="video/quicktime"
+            />
+            <source src="/scan_assets/movies/movie.webm" type="video/webm" />
+          </video>
+        </div>
+        <div class="scan_camera_flow_point">
+          <img src="/scan_assets/images/camera_point_350.png" alt="1ポイント獲得！" />
+        </div>
+        <div class="scan_camera_flow_mypage">
+          <a href="my.html">マイページへ</a>
+          <div><img src="/scan_assets/images/copyright.png" alt=""></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- カメラ映像 -->
+    <video autoplay="true" id="video" class="scan_camera_camera"></video>
+
+    <!-- Loading -->
+    <!-- <div id="loading" class="loading hidden">
+      <div class="uil-ring-css" style="transform: scale(0.6)">
+        <div></div>
+      </div>
+      <div class="loading-overlay-text title text-center">
+        アップロード中です。<br />
+        そのままお待ちください。
+      </div>
+    </div> -->
+  
+    <!-- 缶のサイズ確認 -->
+    <div class="scan_modal_size">
+        <div class="scan_modal_size_modalouter"><div class="scan_modal_size_modalinner">
+            <div class="scan_modal_size_body">
+                <p>350mlでよろしいですか？</p>
+                <ul>
+                    <li><button onclick="scanGetPoint();">はい</button></li>
+                    <li><a href="scan.html">いいえ</a></li>
+                </ul>
+            </div>
+        </div></div>
+    </div>
+
+
+    <svg id="filters">
+      <filter id="noise">
+        <feTurbulence
+          type="fractalNoise"
+          baseFrequency="1"
+          numOctaves="5"
+          result="warp"
+        />
+        <feDisplacementMap
+          xChannelSelector="R"
+          yChannelSelector="G"
+          scale="0"
+          in="SourceGraphic"
+          in2="warp"
+        />
+      </filter>
+    </svg>
+
+    <!-- /Contents -->
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.26.0/axios.min.js"
+      integrity="sha512-bPh3uwgU5qEMipS/VOmRqynnMXGGSRv+72H/N260MQeXZIK4PG48401Bsby9Nq5P5fz7hy5UGNmC/W1Z51h2GQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/tensorflow/4.17.0/tf.min.js"
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+  <script src="/scan_assets/js/scan_contents.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+    integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+  <script src="./js/globals.js"></script>
+  <script src="./js/camera.js"></script>
+  <script src="./js/model.js"></script>
+  <script src="./js/main.js"></script>
+  <script src="./js/scan_camera_flow.js"></script>
+
+  <script>
+    const urlSearchParams = new URLSearchParams(window.location.search);
+    const params = Object.fromEntries(urlSearchParams.entries());
+    const canSize = params.size ? params.size : "350";
+    const API_URL = apiUri();
+    let pollingID;
+
+
+    const scanButton = document.getElementById("scan_camera_btn");
+    // const loadingDiv = document.getElementById("loading");
+    //「生」
+    let outlineNama = document.getElementsByClassName(
+      "scan_camera_flow_guide_move"
+    );
+    //SUN
+    let outlineSun = document.getElementsByClassName(
+      "scan_camera_flow_guide_move_sun"
+    );
+
+
+    let limitTime = 0;
+    let confidenceScore = 0;
+    let formattedData = {};
+
+    const url = apiUri() + "/entry_check";
+    const data = {};
+    const pollingInterval = 1000;
+    //全体の流れ
+    window.addEventListener("load", function () {
+      fixCamera();
+    });
+    window.addEventListener("resize", function () {
+      fixCamera();
+    });
+    const videoElement = document.getElementById("video");
+    const canvasElement = document.createElement("canvas");
+    let scanFrequency = 1000;
+    // if (Object.hasOwnProperty.call(params, 'scanFrequency') && typeof params.scanFrequency !== 'undefined' && !isNaN(params.scanFrequency)) {
+    //   scanFrequency = parseInt(params.scanFrequency);
+    // }
+    let operationTimeLimit = 0;
+    let productDetectionScore = 0;
+    let faceDetectionScore = 0;
+    let productScanIntervalId;
+    let faceScanIntervalId;
+    // let pollingInterval;
+    // const data = {};
+    function stopInterval() {
+      clearTimeout(productScanIntervalId);
+      clearTimeout(faceScanIntervalId);
+    }
+    //ページの流れ
+    document.addEventListener("DOMContentLoaded", async function () {
+      // await sleep(1000);
+      // DA reserved start
+      // MEMO: ユーザ登録は必要なくなりました、モデルロード部分を更新
+      await loadModels();
+      await camera();
+
+      scanCameraFlowInit('yoasobi');
+      (function productDetectionLoop() {
+        checkProduct();
+        productScanIntervalId = setTimeout(productDetectionLoop, scanFrequency);
+        operationTimeLimit += scanFrequency / 1000;
+      })();
+      setTimeout(() => {
+        (function faceDetectionLoop() {
+          checkFace();
+          faceScanIntervalId = setTimeout(faceDetectionLoop, scanFrequency);
+        })();
+      }, 500);
+      // await sleep(1000);
+
+      //①ガイド適用
+      //ガイド
+      let outline = document.getElementsByClassName(
+        "scan_camera_flow_guide_pic"
+      );
+        outline[0].src = `/scan_assets/images/camera_flow1_guide_${canSize}.png`;
+      //「生」
+        outlineNama[0].src = `/scan_assets/images/camera_flow1_guide_${canSize}_mark.png`;
+      //スキャン時のマスク形状
+      let mask = document.getElementsByClassName("scan_camera_flow_2");
+        mask[0].classList.add(`scan_camera_mask_${canSize}`);
+
+        outlineSun[0].src = `/scan_assets/images/camera_flow1_guide_${canSize}_yoasobi.png`;
+
+      scanButton.innerHTML = `<div class="scan_camera_flow_btn"><button></button></div>`;
+
+      // formattedData でスキャン結果を確認できます
+
+      //④スキャン判定
+      //判定OK　ポイント獲得
+      // scanGetPoint();
+
+      //判定NG　NGページへ遷移
+      // location.href = 'scan_ng.html';
+    });
+
+    // DA reserved start
+    // 対象商品であるか確認する関数
+    async function checkProduct() {
+      if (mainModel) {
+        if (operationTimeLimit * scanFrequency < ((scanFrequency % 1000) ? (scanFrequency / 1000) : 1) * 60 * 1000) {
+          checkProductTFJS(canvasElement, videoElement, mainModel).then(async (productDetectionResult) => {
+            productDetectionScore = productDetectionResult;
+            if (productDetectionResult <= 0.45) {
+              scanCameraButtonToggle(false);
+            }
+          });
+        } else {
+          // if timeout expired clear polling
+          stopInterval()
+          // write timeout here
+          window.location = `scan_error01.html`;
+        }
+      }
+    }
+    // Check face
+    function checkFace() {
+      if (faceModel) {
+        if (operationTimeLimit * scanFrequency < ((scanFrequency % 1000) ? (scanFrequency / 1000) : 1) * 60 * 1000) {
+          checkFaceTFJS(canvasElement, videoElement, faceModel).then(async (faceDetectionResult) => {
+            scanCameraButtonToggle(false)
+            scanCameraButtonToggle(faceDetectionResult < 0.5 && productDetectionScore > 0.45)
+            // if (faceDetectionResult > 0.5) {
+            //   scanCameraButtonToggle(false)
+            // } else {
+            //   if (productDetectionScore > 0.45) {
+            //     scanCameraButtonToggle(true)
+            //   }
+            // }
+          });
+        } else {
+          // if timeout expired clear polling
+          stopInterval()
+          // write timeout here
+          window.location = `scan_error01.html`;
+        }
+      }
+    }
+    async function takePictureButton() {
+        const button = document.getElementById("take-button");
+        button.disabled = true;
+        clearTimeout(pollingID);
+
+        scanButton.classList.add("hidden");
+
+        const countdown = document.getElementById("countdown");
+        const countdownNumber = document.getElementById("countdown_number");
+        const scanFlow1 = document.querySelector(".scan_camera_flow_1");
+
+        await sleep(1000);
+        //スキャン時のマスク形状
+        let mask = document.getElementsByClassName("scan_camera_flow_2");
+        let maskMove = document.getElementsByClassName(
+          "scan_camera_flow_2_move"
+        );
+        let videoMask = document.getElementsByClassName("scan_camera_flow_3");
+
+        mask[0].classList.add(`scan_camera_mask_${canSize}`);
+        mask[0].classList.remove("hidden");
+        maskMove[0].classList.remove("hidden");
+        outlineNama[0].classList.add("_stop");
+        outlineSun[0].classList.add("_stop");
+
+        // countdown.classList.add("countdown__reveal");
+        // countdownNumber.innerHTML =
+        //   "<img class='countdown-img' src='/img/count.gif' />";
+        // Show green animation
+        scanDone()
+        await sleep(3000);
+        const canvas = document.createElement("canvas");
+        const video = document.getElementById("video");
+        // const canvasFrame = captureCanvas(canvas, video);
+        const canvasFrame = captureCanvasFull(canvasElement, videoElement);
+
+        canvasFrame.toBlob(async (blob) => {
+        
+          videoMask[0].classList.remove("hidden");
+          // mask[0].classList.add("hidden");
+          // maskMove[0].classList.add("hidden");
+          // scanFlow1.classList.add("hidden");
+
+          // const loadingOverlay = document.querySelector(".loading");
+          // loadingOverlay.classList.remove("hidden");
+          // countdownNumber.classList.add("hidden");
+          // countdown.classList.add("hidden");
+
+          // DA reserved start
+          // ユーザが撮った写真をDAへ送る部分
+          await scanCameraFlow_Animation()
+          // const s = window.URL.createObjectURL(blob);
+          // window.open(s);
+
+          const formData = new FormData();
+          formData.append("file", blob, "file.jpg");
+          formData.append("user_id", params.user_id);
+          formData.append("sd_confidence", productDetectionScore);
+          const request_id = await entryRegister(
+            `${API_URL}/entry_register`,
+            formData
+          );
+          if (request_id) {
+            data["request_id"] = request_id;
+            wait();
+          }
+        });
+        // DA reserved end
+      }
+
+    async function wait() {
+      // MEMO: 結果取得例
+      fetch(url, {
+          method: "POST",
+          headers: {
+            authorization: "b64a2fecdb5e4367bde6e98438b168a9",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        })
+          .then((response) => response.json())
+          .then((result) => {
+            // resultText.textContent = "result came";
+            formattedData = result;
+
+            if (formattedData.error_message != "processing") {
+              // loadingDiv.classList.add("hidden");
+              // console.log("formattedData", formattedData);
+              // 結果表示
+          fetch(`scan_comp.json`)
+            .then((response) => response.json())
+            .then((pointData) => {
+              if (pointData.error_status == 0) {
+                scanSizeCheck(canSize);
+              } else {
+                if (pointData.error_status == 1) {
+                  location.href = 'scan_error01.html';
+                } else if (pointData.error_status == 2) {
+                  location.href = 'scan_error02.html';
+                } else if (pointData.error_status == 3) {
+                  location.href = 'scan_error03.html';
+                } else {
+                  location.href = 'error.html';
+                }
+              }
+            })
+            .catch((error) => {
+              console.error(error);
+            });
+        } else {
+          // resultText.innerHTML = "<h4 class='wrong'> Processing </h4>";
+          console.log("polling");
+          setTimeout(wait, pollingInterval);
+        }
+      })
+        .catch((error) => {
+          console.error(error);
+          // resultText.innerHTML = "<h4 class='wrong'> Error retrying </h4>";
+          setTimeout(wait, pollingInterval);
+        });
+    }
+  </script>
+</body>
+</html>

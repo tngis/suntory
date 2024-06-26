@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.6,user-scalable=yes" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="description" content="" />
+    <meta name="keywords" content="DEMO" />
+    <title>DEMO</title>
+    <meta name="robots" content="noindex,nofollow" />
+    <style type="text/css">
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .inner-content {
+            width: 400px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .btn {
+            cursor: pointer;
+            background-color: #c0c0c0;
+            /* Green */
+            border: none;
+            color: white;
+            padding: 12px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+        }
+
+        .btn:hover,
+        .active {
+            background-color: #262728;
+        }
+
+        .size>input[type="number"] {
+            width: 300px;
+            padding: 12px 20px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        .cup-size>h1 {
+            display: inline-block;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="inner-content">
+            <h1>購買証明（デモ用）</h1>
+            <h2>PAGE</h2>
+            <select id="pageSelect" style="font-size: 30px;">
+                <option value="">Suntory</option>
+                <option value="_yoasobi">Yoasobi</option>
+            </select>
+            <h2>Cup size</h2>
+            <div class="cup-size">
+                <button class="btn active" id="btn350ml">350ml</button>
+                <button class="btn" id="btn500ml">500ml</button>
+            </div>
+            <br />
+            <button class="btn" id="btnDispense">実行</button>
+        </div>
+    </div>
+
+    <script>
+        const btn350ml = document.getElementById("btn350ml");
+        const btn500ml = document.getElementById("btn500ml");
+        const btnDispense = document.getElementById("btnDispense");
+
+        let selectedCupSize = 350;
+        let selectedProduct = '';
+
+        btn350ml.addEventListener("click", () => {
+            btn350ml.classList.add("active");
+            btn500ml.classList.remove("active");
+            selectedCupSize = 350;
+        });
+
+        btn500ml.addEventListener("click", () => {
+            btn350ml.classList.remove("active");
+            btn500ml.classList.add("active");
+            selectedCupSize = 500;
+        });
+        const pageSelect = document.getElementById("pageSelect");
+        pageSelect.addEventListener("change", () => {
+            selectedProduct = pageSelect.value;
+            console.log("🚀 ~ pageSelect.addEventListener ~ selectedProduct:", selectedProduct)
+            // Do something with the selected product value
+        });
+
+        btnDispense.addEventListener("click", () => {
+            window.location = `scan_load${selectedProduct}.html?size=${selectedCupSize}&user_id=ddam_test_user`;
+        });
+    </script>
+</body>
+
+</html>

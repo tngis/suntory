@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.6,user-scalable=yes" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="description" content="" />
+    <!-- <link href="/styles/scanloading.css" rel="stylesheet" type="text/css" /> -->
+    <!-- <title>
+      工場できたてのうまさ実感パック うまさ実感！
+    </title> -->
+    <meta name="robots" content="noindex,nofollow" />
+
+    <!-- <link rel="stylesheet" href="styles/scanLoading.css" /> -->
+    <style>
+        pre {
+            text-align: left;
+            word-wrap: break-word;
+            white-space: normal;
+            overflow-wrap: break-word;
+        }
+
+        .request-list {
+            list-style: square;
+        }
+
+        .request-list>li {
+            font-weight: bold;
+            padding: 4px 0;
+        }
+
+        .request-list>li>span {
+            font-weight: normal;
+        }
+
+        .hidden {
+            display: none;
+            /* visibility: hidden; */
+        }
+
+        .wrong {
+            text-transform: uppercase;
+            color: #ff0000;
+        }
+
+        .loading {
+            background-image: url("./scan_assets/images/camera_loading.gif");
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: 60px;
+            width: 100%;
+            height: 100%;
+            min-height: 300px;
+            padding: 20px auto;
+        }
+
+        .error {
+            color: #ff0000;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="container">
+        <!-- <h1>Request Result</h1> -->
+        <div class="result">
+            <div id="loading" class="loading"></div>
+            <p id="resultText"></p>
+            <div id="success" class="success hidden">
+                <ul class="request-list">
+                    <li>ID: <span id="id"></span></li>
+                    <li>Image name: <span id="image_name"></span></li>
+                    <li>Type: <span id="type"></span></li>
+                    <li>SD Confidence: <span id="sd_confidence"></span></li>
+                    <li>Angle: <span id="angle"></span></li>
+                    <li>Real: <span id="is_real"></span></li>
+                    <li>Fraud: <span id="is_fraud"></span></li>
+                    <li>Created date: <span id="created_at"></span></li>
+                    <li>User ID: <span id="user_id"></span></li>
+                    <li>Product: <span id="product"></span></li>
+                    <li>Error: <span id="error" class="error"></span></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.26.0/axios.min.js"
+        integrity="sha512-bPh3uwgU5qEMipS/VOmRqynnMXGGSRv+72H/N260MQeXZIK4PG48401Bsby9Nq5P5fz7hy5UGNmC/W1Z51h2GQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="./js/globals.js"></script>
+    <script src="./js/main.js"></script>
+    <script>
+        const resultText = document.getElementById("resultText");
+        const loadingDiv = document.getElementById("loading");
+        const successHTML = document.getElementById("success");
+        // const url = API_URL() + "/entry_check";
+        const urlSearchParams = new URLSearchParams(window.location.search);
+        const params = Object.fromEntries(urlSearchParams.entries());
+        const data = { request_id: params.request_id };
+        console.log("🚀 ~ params:", params)
+        const pollingInterval = 1000;
+
+        function pad2(n) {
+            return (n < 10 ? "0" : "") + n;
+        }
+
+        async function wait() {
+            // MEMO: 結果取得例
+            entryCheck(data).then((result) => {
+                console.log(result);
+                // resultText.textContent = "result came";
+                const formattedData = result;
+                loadingDiv.classList.add("hidden");
+
+                if (
+                    formattedData.error_message != "processing"
+                ) {
+                    resultText.classList.add("hidden");
+                    successHTML.classList.remove("hidden");
+                    document.getElementById("id").innerHTML = formattedData.id + "";
+                    document.getElementById("image_name").innerHTML =
+                        formattedData.image_name ? formattedData.image_name + "" : "";
+                    document.getElementById("type").innerHTML = formattedData.type
+                        ? formattedData.type + ""
+                        : "";
+                    document.getElementById("sd_confidence").innerHTML =
+                        formattedData.sd_confidence + "";
+                    document.getElementById("angle").innerHTML = formattedData.angle
+                        ? formattedData.angle + ""
+                        : "";
+                    document.getElementById("is_real").innerHTML =
+                        formattedData.is_real ? "Yes" : "No";
+                    document.getElementById("is_fraud").innerHTML =
+                        formattedData.is_fraud ? "Yes" : "No";
+
+                    const createdDate = new Date(formattedData.created_at);
+
+                    document.getElementById("created_at").innerHTML =
+                        createdDate.getFullYear() +
+                        "-" +
+                        pad2(createdDate.getMonth() + 1) +
+                        "-" +
+                        pad2(createdDate.getDate());
+                    document.getElementById("user_id").innerHTML =
+                        formattedData.user_id + "";
+                    document.getElementById("product").innerHTML =
+                        formattedData.product ? formattedData.product + "" : "";
+
+                    const errorArr = JSON.parse(
+                        formattedData.hasOwnProperty("error_message") &&
+                            typeof formattedData.error_message === "string"
+                            ? formattedData.error_message.replace(/'/g, '"')
+                            : ""
+                    );
+
+                    document.getElementById("error").innerHTML =
+                        errorArr[0] && errorArr[0]["message"]
+                            ? errorArr[0]["message"]
+                            : "";
+                } else {
+                    resultText.innerHTML = "<h4 class='wrong'> Processing </h4>";
+                    setTimeout(wait, pollingInterval);
+                }
+            })
+                .catch((error) => {
+                    console.error(error);
+                    resultText.innerHTML = "<h4 class='wrong'> Error retrying </h4>";
+                    setTimeout(wait, pollingInterval);
+                });
+        }
+        wait();
+    </script>
+</body>
+
+</html>
